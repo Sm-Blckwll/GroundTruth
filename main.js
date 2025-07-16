@@ -46,7 +46,7 @@ map.on('locationfound', function(e) {
 var compassIcon = L.control({ position: 'topright' });
 compassIcon.onAdd = function (map) {
     var div = L.DomUtil.create('div', 'compass-indicator');
-    div.innerHTML = '<span id="compass-heading">--</span>°';
+    div.innerHTML = '<span id="compass-heading">--</span>° v1.1✨';
     return div;
 };
 compassIcon.addTo(map);
