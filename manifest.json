@@ -1,0 +1,33 @@
+{
+"name": "gTruth",
+"short_name": "gTruth",
+"start_url": "https://sm-blckwll.github.io/GroundTruth/",
+"display": "standalone",
+"description": "gTruth sm-blk",
+"dir": "auto",
+"theme_color": "#000000",
+"background_color": "#000000",
+"orientation": "any",
+"icons": [
+    {
+        "src": "https://www.pwabuilder.com/assets/icons/icon_512.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "maskable"
+    },
+    {
+        "src": "https://www.pwabuilder.com/assets/icons/icon_192.png",
+        "sizes": "192x192",
+        "type": "image/png",
+        "purpose": "any"
+    }
+],
+"screenshots": [
+    {
+        "src": "https://www.pwabuilder.com/assets/screenshots/screen1.png",
+        "sizes": "2880x1800",
+        "type": "image/png",
+        "description": "A screenshot of the home page"
+    }
+]
+}
