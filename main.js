@@ -1,3 +1,16 @@
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js')
+      .then(registration => {
+        console.log('ServiceWorker registered:', registration);
+      })
+      .catch(error => {
+        console.log('ServiceWorker registration failed:', error);
+      });
+  });
+}
+
+
 var map = L.map('map', {
     center: [51.09309929090176, -4.203939263088293],
     zoom: 13,
@@ -16,14 +29,14 @@ var mytile = L.tileLayer('scrub/{z}/{x}/{y}.png', {
 
 
 const locateControl = L.control.locate({
-  setView: false, // We'll handle centering manually
+  setView: false, 
   flyTo: false,
   keepCurrentZoomLevel: false,
-  watch: false,
+  watch: true,
   enableHighAccuracy: true
 }).addTo(map);
 
-// Listen for locationfound and center the map
+
 map.on('locationfound', function(e) {
   map.setView(e.latlng, map.getZoom(), { animate: true });
 });
@@ -33,7 +46,7 @@ map.on('locationfound', function(e) {
 var compassIcon = L.control({ position: 'topright' });
 compassIcon.onAdd = function (map) {
     var div = L.DomUtil.create('div', 'compass-indicator');
-    div.innerHTML = '🧭 <span id="compass-heading">--</span>°';
+    div.innerHTML = '<span id="compass-heading">--</span>°';
     return div;
 };
 compassIcon.addTo(map);
