@@ -38,7 +38,7 @@ map.on('locationfound', function(e) {
 var compassIcon = L.control({ position: 'topright' });
 compassIcon.onAdd = function (map) {
     var div = L.DomUtil.create('div', 'compass-indicator');
-    div.innerHTML = '<span id="compass-heading">--</span>° v1.2✨';
+    div.innerHTML = '<span id="compass-heading">--</span>° v1.3✨';
     return div;
 };
 compassIcon.addTo(map);
@@ -60,63 +60,87 @@ function updateCompass(event) {
 
 const scrubBounds = L.latLngBounds(
   L.latLng(51.06589, -4.23008),
-  L.latLng(51.11829, -4.18287)
+  L.latLng(51.12529, -4.18287)
 );
 
 let sweeping = false;
 
-// Add the button as a Leaflet control
+const mask = document.getElementById('map-mask');
+const progress = document.getElementById('loading-progress');
+const percentText = document.getElementById('loading-percent');
+const cancelBtn = document.getElementById('cancel-button');
+
+cancelBtn.addEventListener('click', () => {
+  sweeping = false;
+});
+
 L.Control.LoadTiles = L.Control.extend({
-  options: {
-    position: 'bottomleft'
-  },
+  options: { position: 'bottomleft' },
 
   onAdd: function (map) {
     const container = L.DomUtil.create('div', 'leaflet-control-loadtiles');
     const button = L.DomUtil.create('button', '', container);
     button.id = 'load-tiles';
     button.textContent = '🤖';
-    button.style.padding = '8px 8px';
-    button.style.fontSize = '12px';
-    button.style.backgroundColor = 'rgb(244, 244, 244)';
-    button.style.borderBottomColor = 'rgb(204, 204, 204)';
-    button.style.borderWidth = '2px';
-    button.style.borderStyle = 'solid';
-    button.style.borderRadius = '4px';
-    button.style.cursor = 'pointer';
+    Object.assign(button.style, {
+      padding: '8px 8px',
+      fontSize: '12px',
+      backgroundColor: 'rgb(244, 244, 244)',
+      borderBottomColor: 'rgb(204, 204, 204)',
+      borderWidth: '2px',
+      borderStyle: 'solid',
+      borderRadius: '4px',
+      cursor: 'pointer'
+    });
 
     button.addEventListener('click', async () => {
       sweeping = !sweeping;
 
       if (sweeping) {
-        button.textContent = '⛔';
+        mask.style.display = 'flex';
+        progress.style.width = '0%';
+        percentText.textContent = '0%';
+
         const bounds = scrubBounds;
         const startZoom = map.getZoom();
         const startCenter = map.getCenter();
+        const stepByZoom = { 13: 0.03, 14: 0.02, 15: 0.02, 16: 0.01, 17: 0.005 };
+
+        let estimatedSteps = 0;
+
+for (let z = 13; z <= 17; z++) {
+  const step = stepByZoom[z];
+  const sw = scrubBounds.getSouthWest();
+  const ne = scrubBounds.getNorthEast();
+
+  const latSteps = Math.ceil((ne.lat - sw.lat) / step);
+  const lngSteps = Math.ceil((ne.lng - sw.lng) / step);
+  estimatedSteps += latSteps * lngSteps;
+}
+
+        let stepCount = 0;
 
         for (let z = 13; z <= 17 && sweeping; z++) {
           map.setZoom(z);
           await new Promise(resolve => setTimeout(resolve, 500));
 
-          let step;
-          switch (z) {
-            case 13: step = 0.03; break;
-            case 14: step = 0.02; break;
-            case 15: step = 0.02; break;
-            case 16: step = 0.01; break;
-            case 17: step = 0.005; break;
-          }
-
+          const step = stepByZoom[z];
           const sw = bounds.getSouthWest();
           const ne = bounds.getNorthEast();
 
           for (let lat = sw.lat; lat <= ne.lat && sweeping; lat += step) {
             for (let lng = sw.lng; lng <= ne.lng && sweeping; lng += step) {
               map.panTo([lat, lng]);
-              await new Promise(resolve => setTimeout(resolve, 200));
+              await new Promise(resolve => setTimeout(resolve, 300));
+              stepCount++;
+              const percent = Math.min(100, Math.round((stepCount / estimatedSteps) * 100));
+              progress.style.width = `${percent}%`;
+              percentText.textContent = `${percent}%`;
             }
           }
         }
+
+        mask.style.display = 'none';
 
         if (sweeping) {
           map.setZoom(startZoom);
@@ -127,9 +151,8 @@ L.Control.LoadTiles = L.Control.extend({
         }
 
         sweeping = false;
-        button.textContent = '🤖';
       } else {
-        button.textContent = '🤖';
+        mask.style.display = 'none';
         console.log('🛑 Cancelling sweep...');
       }
     });
@@ -139,5 +162,6 @@ L.Control.LoadTiles = L.Control.extend({
 });
 
 map.addControl(new L.Control.LoadTiles());
+
 
 

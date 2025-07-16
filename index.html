@@ -7,25 +7,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <link rel="manifest" href="manifest.json">
-    
+
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
-    
-<script>navigator.serviceWorker.register("service-worker.js")</script> 
-<link rel="manifest" href="manifest.json" />    <link rel="stylesheet" href="style.css">
+
+    <script>navigator.serviceWorker.register("service-worker.js")</script>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    
+    <div id="map-mask">
+        <p>Auto loading tiles please wait</p>
+        <div id="loading-percent">0%</div>
+  <div id="loading-bar">
+    <div id="loading-progress"></div>
+  </div>
   
-  <div id="map"></div>
+  <button id="cancel-button">Stop Caching ⛔</button>
+</div>
 
 
-    
+
+
+    <div id="map"></div>
+
+
+
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.js"></script>
 
-    
+
     <script src="main.js"></script>
 </body>
 
