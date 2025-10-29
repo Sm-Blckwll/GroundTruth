@@ -53,10 +53,49 @@ p {
     color: #f4f4f4;
 }
 
-
-
+#load-tiles {
+  border-bottom: none;
+}
 
 #map {
     width: 100dvw;
     height: 100dvh;
+}
+
+#opacity-slider-container {
+    position: absolute;
+    left: 50%;
+    bottom: 10px;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 1);
+    padding: 4px 6px;
+    border-radius: 4px;
+    box-shadow: 0 0 6px rgba(0,0,0,0.3);
+    text-align: center;
+    z-index: 1000;
+    border: solid 2px rgba(0, 0, 0, 0);
+}
+
+/* Make the slider track black */
+#opacity-slider-container input[type="range"] {
+    width: 150px;       
+    accent-color: black; 
+}
+
+
+
+
+
+.layer-divider {
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  margin: 6px 0 2px;
+  border-top: 1px solid #ccc;
+}
+
+.leaflet-control-layers-toggle {
+    width: 32px !important;
+    height: 32px !important;
+    background-size: 16px 16px !important; /* scale the default icon */
 }
