@@ -21,13 +21,13 @@ const mytile = L.tileLayer('scrub/{z}/{x}/{y}.png', {
   nativeZooms: [13, 14, 15, 16, 17]
 }).addTo(map);
 
-const locateControl = L.control.locate({ setView: false, flyTo: false, watch: false, enableHighAccuracy: true }).addTo(map);
+const locateControl = L.control.locate({ setView: false, flyTo: false, watch: false, enableHighAccuracy: true, maximumAge: 0, timeout: 10000 }).addTo(map);
 map.on('locationfound', e => map.setView(e.latlng, map.getZoom(), { animate: true }));
 
 const compassIcon = L.control({ position: 'topright' });
 compassIcon.onAdd = function () {
   const div = L.DomUtil.create('div', 'compass-indicator');
-  div.innerHTML = '<span id="compass-heading">--</span>° v1.5✨';
+  div.innerHTML = '<span id="compass-heading">--</span>° v1.6✨';
   return div;
 };
 compassIcon.addTo(map);
@@ -222,23 +222,3 @@ async function loadVectorLayers() {
 }
 
 loadVectorLayers();
-
-let gpsMarker = null;
-let geoId = null;
-
-function startGpsWatch() {
-  if (!navigator.geolocation) return console.warn('geolocation not available');
-  if (geoId != null) navigator.geolocation.clearWatch(geoId);
-
-  geoId = navigator.geolocation.watchPosition(
-    pos => {
-      const latlng = [pos.coords.latitude, pos.coords.longitude];
-      if (!gpsMarker) gpsMarker = L.circleMarker(latlng, { radius: 6 }).addTo(map);
-      else gpsMarker.setLatLng(latlng);
-      map.panTo(latlng, { animate: false });
-    },
-    err => console.warn('gps error', err),
-    { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 }
-  );
-}
-startGpsWatch();
