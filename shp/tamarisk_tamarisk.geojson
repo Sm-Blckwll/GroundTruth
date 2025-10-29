@@ -1,0 +1,10 @@
+{
+"type": "FeatureCollection",
+"name": "tamarisk",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Parcel Number": "SS45360530", "Zone": "1", "Location": "Foredunes", "Area m2": 15, "Height m": 3.5, "Plants": 4, "Eastings": 244635, "Northings": 136302, "Grif Ref SS:": "44635 36302", "Survey Date": "21/07/2025" }, "geometry": { "type": "Point", "coordinates": [ -4.220599733194956, 51.104902976879018 ] } },
+{ "type": "Feature", "properties": { "Parcel Number": "N/A", "Zone": "Outside boundary", "Location": "Surrounding car park at Saunton", "Area m2": 40, "Height m": 3.5, "Plants": 50, "Eastings": 244698, "Northings": 137585, "Grif Ref SS:": "44698 37585", "Survey Date": "21/07/2025" }, "geometry": { "type": "Point", "coordinates": [ -4.220253350810705, 51.116448496883351 ] } },
+{ "type": "Feature", "properties": { "Parcel Number": "TOTAL:", "Zone": null, "Location": null, "Area m2": 55, "Height m": null, "Plants": 54, "Eastings": null, "Northings": null, "Grif Ref SS:": null, "Survey Date": null }, "geometry": null }
+]
+}
